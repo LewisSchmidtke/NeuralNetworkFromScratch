@@ -22,6 +22,7 @@
 
 import numpy as np
 import source.activation_functions as act
+from source.early_stopping_class import EarlyStop
 
 
 def initial_parameters():
@@ -130,7 +131,7 @@ def get_accuracy(predictions, y):
     :param y: (numpy.ndarray) True class labels.
     :return: float Accuracy value.
     """
-    print(predictions, y)
+    # print(predictions, y)
     return np.sum(predictions == y) / y.size
 
 def gradient_descent(x, y, iterations, lr):
@@ -144,11 +145,25 @@ def gradient_descent(x, y, iterations, lr):
     :return: Trained weights and biases (w1, w2, b1, b2).
     """
     w1, w2, b1, b2 = initial_parameters()
+    # Initiate an object to keep track of accuracy and warrant early stopping
+    early_stopping_checker = EarlyStop(iterations)
+    # Start training Loop
     for i in range(iterations):
-        z1, a1, z2, a2 = forward_propagation(w1, w2, b1, b2, x)
+        z1, a1, z2, a2 = forward_propagation(w1, w2, b1, b2, x) # Forward pass through the architecture.
+        accuracy = get_accuracy(get_predictions(a2), y) # Calculate accuracy for current pass
+        # Call early stopping function on current accuracy
+        early_stopping = early_stopping_checker.check_for_early_stopping(current_epoch=i, current_accuracy=accuracy)
+        # Returns from training
+        if early_stopping:
+            print("Stopped after {} epochs.".format(i))
+            return w1, w2, b1, b2
+        # If early stopping is not applicable calculates gradients
         dw1, dw2, db1, db2 = backward_propagation(w2, z1, a1, a2, x, y)
-        w1, w2, b1, b2 = update_parameters(w1, w2, dw1, dw2, b1, b2, db1, db2, lr)
+        w1, w2, b1, b2 = update_parameters(w1, w2, dw1, dw2, b1, b2, db1, db2, lr) # optimizes weights and biases
+        # Every 10 epochs the current epoch and accuracy is printed
         if i % 10 == 0:
             print("Iteration:", i)
-            print("Accuracy:", get_accuracy(get_predictions(a2), y))
+            print("Accuracy:", accuracy)
     return w1, w2, b1, b2
+
+
