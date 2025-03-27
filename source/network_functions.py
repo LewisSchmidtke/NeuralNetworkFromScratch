@@ -143,6 +143,7 @@ def gradient_descent(x, y, iterations, lr):
     :param iterations: (int) Number of training iterations.
     :param lr: (float) Learning rate.
     :return: Trained weights and biases (w1, w2, b1, b2).
+    :return: Object of type EarlyStop, hold accuracy per epoch and other information.
     """
     w1, w2, b1, b2 = initial_parameters()
     # Initiate an object to keep track of accuracy and warrant early stopping
@@ -164,6 +165,6 @@ def gradient_descent(x, y, iterations, lr):
         if i % 10 == 0:
             print("Iteration:", i)
             print("Accuracy:", accuracy)
-    return w1, w2, b1, b2
+    return w1, w2, b1, b2, early_stopping_checker
 
 
