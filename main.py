@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from kaggle.api.kaggle_api_extended import KaggleApi
 
 from source.network_functions import gradient_descent
+import source.visualization_functions as vis
 
 # Initialize kaggle api call and download mnist data
 api = KaggleApi()
@@ -42,8 +43,10 @@ x_test = x_test / 255
 
 
 # Set training parameters
-EPOCHS = 1000
+EPOCHS = 20
 LEARNING_RATE = 0.1
 
 # Initialize training
-w1, w2, b1, b2 = gradient_descent(x_train, y_train, EPOCHS, LEARNING_RATE)
+w1, w2, b1, b2, accuracy_tracker = gradient_descent(x_train, y_train, EPOCHS, LEARNING_RATE)
+training_accuracy = accuracy_tracker.epoch_accuracies
+vis.plot_training_accuracy(training_accuracy)
