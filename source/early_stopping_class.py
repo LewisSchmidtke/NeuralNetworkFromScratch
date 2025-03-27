@@ -14,6 +14,7 @@ class EarlyStop:
         self.penalized_accuracies = []
         self.max_accuracy = 0 # Will hold the best achieved accuracy
         self.best_epoch = 0 # Will hold the epoch connected to the best achieved accuracy
+        self.early_stopping = False # Keep track of if early stopping was applied
 
     @staticmethod
     def apply_accuracy_penalty(current_accuracy: float) -> float:
@@ -44,6 +45,7 @@ class EarlyStop:
             # Also checks for high accuracy to prevent any overfitting at high accuracies.
             if ((penalized_accuracy <= self.max_accuracy and current_epoch - self.best_epoch >= self.patience) or
                     current_accuracy >= 0.99):
+                self.early_stopping = True
                 return True
         self.update_best_accuracy(current_accuracy, current_epoch)
 
