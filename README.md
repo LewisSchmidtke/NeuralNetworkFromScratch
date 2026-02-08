@@ -14,10 +14,8 @@ The goal is to understand the core mechanics of neural networks, including forwa
 - Gradient descent optimization
 
 ## Planned Features
-- Additional activation functions (Tanh, Sigmoid, Leaky ReLU, etc.)
 - Early stopping implementation ✔️
 - Visualization of loss curves and training progress ✔️
-- Easily customizable layers and neurons 
 
 ## Contributing
 If you'd like to contribute, feel free to open an issue or submit a pull request!
